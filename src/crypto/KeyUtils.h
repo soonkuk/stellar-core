@@ -104,6 +104,7 @@ canConvert(F const& fromKey)
         KeyFunctions<F>::toKeyVersion(fromKey.type()));
 }
 
+// key를 변환시켜주는 템플릿 아마도 스텔라는 여러 종류의 키 형태가 존재하기 때문에 그 간에 변환을 해주는 템플릿인 것 같다.
 template <typename T, typename F>
 T
 convertKey(F const& fromKey)

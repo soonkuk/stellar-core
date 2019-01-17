@@ -33,8 +33,9 @@ namespace stellar
 
 using namespace std;
 
+// account의 threshold을 level에 따라서 가져온다.
 static int32_t
-getNeededThreshold(LedgerTxnEntry const& account, ThresholdLevel const level)
+getNeededThreshold(LedgerT`xnEntry const& account, ThresholdLevel const level)
 {
     auto const& acc = account.current().data.account();
     switch (level)
@@ -50,6 +51,7 @@ getNeededThreshold(LedgerTxnEntry const& account, ThresholdLevel const level)
     }
 }
 
+// operation을 type에 따라서 make해준다.
 shared_ptr<OperationFrame>
 OperationFrame::makeHelper(Operation const& op, OperationResult& res,
                            TransactionFrame& tx)
@@ -87,6 +89,7 @@ OperationFrame::makeHelper(Operation const& op, OperationResult& res,
     }
 }
 
+// 생성자
 OperationFrame::OperationFrame(Operation const& op, OperationResult& res,
                                TransactionFrame& parentTx)
     : mOperation(op), mParentTx(parentTx), mResult(res)
@@ -116,17 +119,19 @@ OperationFrame::apply(SignatureChecker& signatureChecker, Application& app,
     return res;
 }
 
+// 현재 operation의 threshold를 리턴 virtual 함수이어서 override할 수 있다.
 ThresholdLevel
 OperationFrame::getThresholdLevel() const
 {
     return ThresholdLevel::MEDIUM;
 }
-
+// versiond에서 이 operation이 support되는지에 대한 boolean 값을 리턴 virtual 함수이어서 override할 수 있음. 
 bool OperationFrame::isVersionSupported(uint32_t) const
 {
     return true;
 }
 
+// operation을 위한 signature가 transaction에 있는지 확인하는 함수
 bool
 OperationFrame::checkSignature(SignatureChecker& signatureChecker,
                                Application& app, AbstractLedgerTxn& ltx,
@@ -134,6 +139,7 @@ OperationFrame::checkSignature(SignatureChecker& signatureChecker,
 {
     auto header = ltx.loadHeader();
     auto sourceAccount = loadSourceAccount(ltx, header);
+    // source account가 존재하는 경우
     if (sourceAccount)
     {
         auto neededThreshold =
@@ -145,6 +151,7 @@ OperationFrame::checkSignature(SignatureChecker& signatureChecker,
             return false;
         }
     }
+    // source account가 존재하지 않는 경우
     else
     {
         if (forApply || !mOperation.sourceAccount)
@@ -181,6 +188,8 @@ OperationFrame::getResultCode() const
 // called when determining if we should flood
 // make sure sig is correct
 // verifies that the operation is well formed (operation specific)
+// operation에 대한 validation 검증, 
+// transaction에 operation에 적합한 signature가 들어가있는지도 확인.
 bool
 OperationFrame::checkValid(SignatureChecker& signatureChecker, Application& app,
                            AbstractLedgerTxn& ltxOuter, bool forApply)
