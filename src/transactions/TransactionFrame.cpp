@@ -136,12 +136,17 @@ TransactionFrame::checkSignature(SignatureChecker& signatureChecker,
                                  int32_t neededWeight)
 {
     auto& acc = account.current().data.account();
+    // vector<type> obj, signer type의 vector signers를 선언
     std::vector<Signer> signers;
     if (acc.thresholds[0])
     {
+        // acc.accountID에서 Signerkey type의 key로 변환
         auto signerKey = KeyUtils::convertKey<SignerKey>(acc.accountID);
+        // signer를 만들어서 signers vector에 추가
         signers.push_back(Signer(signerKey, acc.thresholds[0]));
     }
+    // signers에 account의 마스터키의 signer를 넣고
+    // account의 signers들을 모두 추가하여 합친다
     signers.insert(signers.end(), acc.signers.begin(), acc.signers.end());
 
     return signatureChecker.checkSignature(acc.accountID, signers,

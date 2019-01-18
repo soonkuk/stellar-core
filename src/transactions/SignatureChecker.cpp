@@ -46,6 +46,7 @@ SignatureChecker::checkSignature(AccountID const& accountID,
     // current transaction hash is not stored in getEnvelope().signatures - it
     // is
     // computed with getContentsHash() method
+    // 
     for (auto const& signerKey : signers[SIGNER_KEY_TYPE_PRE_AUTH_TX])
     {
         if (signerKey.key.preAuthTx() == mContentsHash)
