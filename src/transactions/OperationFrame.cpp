@@ -142,6 +142,7 @@ OperationFrame::checkSignature(SignatureChecker& signatureChecker,
     // source account가 존재하는 경우
     if (sourceAccount)
     {
+        // account의 threshold 확인
         auto neededThreshold =
             getNeededThreshold(sourceAccount, getThresholdLevel());
         if (!mParentTx.checkSignature(signatureChecker, sourceAccount,
