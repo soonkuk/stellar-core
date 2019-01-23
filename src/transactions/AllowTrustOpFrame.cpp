@@ -30,6 +30,7 @@ AllowTrustOpFrame::getThresholdLevel() const
 bool
 AllowTrustOpFrame::doApply(Application& app, AbstractLedgerTxn& ltx)
 {
+    // version 3부터는 자기 자신에게 trust를 허락하는 것은 허용되지 않기 때문에 이를 시도할 경우 false를 리턴한다.
     if (ltx.loadHeader().current().ledgerVersion > 2)
     {
         if (mAllowTrust.trustor == getSourceID())
@@ -60,6 +61,7 @@ AllowTrustOpFrame::doApply(Application& app, AbstractLedgerTxn& ltx)
         }
     }
 
+    // version 1과 2에서는 자기 자신에 대한 trust를 set하는 것을 허용
     // Only possible in ledger version 1 and 2
     if (mAllowTrust.trustor == getSourceID())
     {

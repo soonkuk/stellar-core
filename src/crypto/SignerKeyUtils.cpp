@@ -13,6 +13,7 @@ namespace stellar
 namespace SignerKeyUtils
 {
 
+// transaction을 parameter로 전달했을 때 transaction의 hash를 signerkey의 preAuthTx값으로 설정하는 함수
 SignerKey
 preAuthTxKey(TransactionFrame const& tx)
 {
@@ -22,6 +23,7 @@ preAuthTxKey(TransactionFrame const& tx)
     return sk;
 }
 
+// byteslice를 전달하면 byteslice의 hash값을 signerkey의 hashX값으로 설정하는 함수
 SignerKey
 hashXKey(ByteSlice const& bs)
 {
